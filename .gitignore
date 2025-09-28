@@ -2,7 +2,7 @@
 .gradle/
 build/
 
-# IntelliJ IDEA
+# IntelliJ IDEA / Android Studio
 .idea/
 *.iml
 *.ipr
@@ -13,7 +13,7 @@ out/
 *.class
 *.log
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
