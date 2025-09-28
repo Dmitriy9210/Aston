@@ -22,3 +22,9 @@ Thumbs.db
 *.bin
 *.probe
 *.cache
+/Aston/build.gradle.kts
+/Aston/gradle/wrapper/gradle-wrapper.jar
+/Aston/gradle/wrapper/gradle-wrapper.properties
+/Aston/gradlew
+/Aston/gradlew.bat
+/Aston/settings.gradle.kts
