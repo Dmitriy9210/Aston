@@ -1,27 +1,99 @@
 package lesson2;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import java.util.Scanner;
+
 
 public class HibernateTest {
+
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final DAO userDao = new UserDaoImpl();
+
     public static void main(String[] args) {
-        // Загружаем конфигурацию и создаём фабрику сессий
-        Configuration cfg = new Configuration().configure(); // hibernate.cfg.xml в resources
-        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        while (true) {
+            System.out.println("1. Create user");
+            System.out.println("2. Read user");
+            System.out.println("3. Update user");
+            System.out.println("4. Delete user");
+            System.out.println("5. Show all users");
+            System.out.println("0. Exit");
 
-        // Открываем сессию
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        // Пример: создаём нового пользователя
-        User user = new User("testuser", "test@example.com", 4);
-        session.save(user);
+            switch (choice) {
+                case 1 -> createUser();
+                case 2 -> readUser();
+                case 3 -> updateUser();
+                case 4 -> deleteUser();
+                case 5 -> listUsers();
+                case 0 -> System.exit(0);
+            }
+        }
+    }
 
-        session.getTransaction().commit();
-        session.close();
-        sessionFactory.close();
+    private static void createUser() {
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
 
-        System.out.println("Пользователь сохранён с id: " + user.getId());
+        User user = new User();
+        user.setUsername(name);
+        user.setEmail(email);
+        user.setAge(age);
+
+        userDao.create(user);
+        System.out.println("User created!");
+    }
+
+    private static void readUser() {
+        System.out.print("ID: ");
+        int id = scanner.nextInt();
+
+        User user = new User();
+        user.setId(id);
+
+        System.out.println("User: " + userDao.read(id).toString());
+
+    }
+
+    private static void updateUser() {
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
+
+        User user = new User();
+        user.setUsername(name);
+        user.setEmail(email);
+        user.setAge(age);
+
+        userDao.update(user);
+        System.out.println("User updated!");
+    }
+
+    private static void deleteUser() {
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
+
+        User user = new User();
+        user.setUsername(name);
+        user.setEmail(email);
+        user.setAge(age);
+
+        userDao.delete(user);
+        System.out.println("User deleted!");
+    }
+
+    private static void listUsers() {
     }
 }
+
