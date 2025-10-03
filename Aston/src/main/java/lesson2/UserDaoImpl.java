@@ -11,7 +11,7 @@ public class UserDaoImpl implements DAO {
     public void create(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
-            session.save(user);
+            session.persist(user);
             tx.commit();
         }
     }
@@ -22,7 +22,7 @@ public class UserDaoImpl implements DAO {
             if (isNull(session.get(User.class, id)))
                 return session.get(User.class, id);
             else {
-                return new User();
+                return new User(0);
             }
         }
     }
@@ -31,16 +31,8 @@ public class UserDaoImpl implements DAO {
     public void update(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
-
-            if (isNull((User) session.get(user.getUsername(), user.getId())))
-                session.update(user);
-            else {
-                session.update(new User());
-
-//                isNull(session.get(User.class, user.getId()));
-//                session.update(user);
-                tx.commit();
-            }
+            session.merge(user);
+            tx.commit();
         }
     }
 
@@ -48,7 +40,7 @@ public class UserDaoImpl implements DAO {
     public void delete(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
-            session.delete(user);
+            session.remove(user);
             tx.commit();
         }
     }
@@ -56,16 +48,13 @@ public class UserDaoImpl implements DAO {
     @Override
     public List<User> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
-//            session.get(user);
-            tx.commit();
-            return List.of();
+            return session.createQuery("from User", User.class).list();
         }
     }
 
 
-    private <T> boolean isNull(User u) {
-        if (u != null) {
+    private boolean isNull(User user) {
+        if (user != null) {
             return true;
         } else {
             System.out.println("Пользователь с таким ID не найден");

@@ -13,14 +13,17 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String username;
     private String email;
     private int age;
     private LocalDate created_at;
 
-    // Конструкторы
     public User() {
+    }
+
+    public User(Integer id) {
+        this.id = id;
     }
 
     public User(String username, String email, int age) {
@@ -32,11 +35,11 @@ public class User {
 
     // Геттеры и сеттеры
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
